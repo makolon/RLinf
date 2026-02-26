@@ -1,6 +1,6 @@
 defaults:
-  - env/isaaclab_stack_cube@env.train
-  - env/isaaclab_stack_cube@env.eval
+  - env/isaaclab@env.train
+  - env/isaaclab@env.eval
   - model/gr00t@actor.model
   - training_backend/fsdp@actor.fsdp_config
   - override hydra/job_logging: stdout
@@ -39,7 +39,7 @@ runner:
   logger:
     log_path: "../results"
     project_name: rlinf
-    experiment_name: "isaaclab_ppo_gr00t_demo"
+    experiment_name: "isaaclab_ppo_gr00t"
     logger_backends: ["tensorboard"] # wandb, swanlab
 
   max_epochs: 1000
@@ -130,7 +130,7 @@ rollout:
   pipeline_stage_num: 1
 
   model:
-    model_path: "/path/to/RLinf-Gr00t-SFT-Stack-cube" # https://huggingface.co/RLinf/RLinf-Gr00t-SFT-Stack-cube
+    model_path: "" # https://huggingface.co/RLinf/RLinf-Gr00t-SFT-Stack-cube
     precision: ${actor.model.precision}
 
 actor:
@@ -143,10 +143,10 @@ actor:
 
   # Override the default values in model/gr00t
   model:
-    model_path: "/path/to/RLinf-Gr00t-SFT-Stack-cube" # https://huggingface.co/RLinf/RLinf-Gr00t-SFT-Stack-cube
+    model_path: "" # https://huggingface.co/RLinf/RLinf-Gr00t-SFT-Stack-cube
     add_value_head: True
-    embodiment_tag: "isaaclab_franka"
-    obs_converter_type: "isaaclab_stack_cube"
+    embodiment_tag: "oxe_droid"
+    obs_converter_type: "isaaclab"
     num_action_chunks: 16
 
   optim:

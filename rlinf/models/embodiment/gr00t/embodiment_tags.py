@@ -47,6 +47,11 @@ class EmbodimentTag(Enum):
     The isaaclab Franka dataset.
     """
 
+    ISAACLAB_UNITREE_G1 = "isaaclab_unitree_g1"
+    """
+    The isaaclab G1 dataset.
+    """
+
 
 # Embodiment tag string: to projector index in the Action Expert Module
 EMBODIMENT_TAG_MAPPING = {
@@ -56,4 +61,5 @@ EMBODIMENT_TAG_MAPPING = {
     EmbodimentTag.GR1.value: 24,
     EmbodimentTag.MANISKILL_WIDOWX.value: 30,
     EmbodimentTag.ISAACLAB_FRANKA.value: 31,
+    EmbodimentTag.ISAACLAB_UNITREE_G1.value: 32,
 }

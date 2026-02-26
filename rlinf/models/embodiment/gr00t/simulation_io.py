@@ -70,6 +70,30 @@ def convert_maniskill_obs_to_gr00t_format(env_obs):
     return groot_obs
 
 
+def convert_isaaclab_obs_to_gr00t_format(env_obs):
+    """
+    Convert the observation to the format expected by the GR00T model.
+    The data format is determined by the modality_config and meta/info.json following LeRobot format.
+    Considering that we don't have a unified data inferface, we use direct logic here.
+    """
+    groot_obs = {}
+
+    # [B, H, W, C] -> [B, T, H, W, C]
+    groot_obs["video.image"] = env_obs["main_images"].unsqueeze(1).numpy()
+    groot_obs["video.wrist_image"] = env_obs["wrist_images"].unsqueeze(1).numpy()
+    # [B, 8] -> [B, T(1), 8]
+    groot_obs["state.x"] = env_obs["states"].unsqueeze(1)[:, :, 0:1].numpy()
+    groot_obs["state.y"] = env_obs["states"].unsqueeze(1)[:, :, 1:2].numpy()
+    groot_obs["state.z"] = env_obs["states"].unsqueeze(1)[:, :, 2:3].numpy()
+    groot_obs["state.roll"] = env_obs["states"].unsqueeze(1)[:, :, 3:4].numpy()
+    groot_obs["state.pitch"] = env_obs["states"].unsqueeze(1)[:, :, 4:5].numpy()
+    groot_obs["state.yaw"] = env_obs["states"].unsqueeze(1)[:, :, 5:6].numpy()
+    groot_obs["state.gripper"] = env_obs["states"].unsqueeze(1)[:, :, 6:].numpy()
+    groot_obs["annotation.human.action.task_description"] = env_obs["task_descriptions"]
+
+    return groot_obs
+
+
 def convert_to_libero_action(
     action_chunk: dict[str, np.array], chunk_size: int = 1
 ) -> np.ndarray:
@@ -108,12 +132,10 @@ def convert_to_maniskill_action(
     return action_chunk["action.left_arm"][:, :chunk_size]
 
 
-def convert_to_isaaclab_stack_cube_action(
+def convert_to_isaaclab_action(
     action_chunk: dict[str, np.array], chunk_size: int = 1
 ) -> np.ndarray:
-    """Convert GR00T action chunk to Isaaclab Stack Cube format.
-    The main difference of Libero and Isaaclab Stack Cube is gripper action in
-    Libero is 0 and 1, but in Isaaclab Stack Cube is -1 and +1.
+    """Convert GR00T action chunk to Isaaclab format.
 
     Args:
         action_chunk: Dictionary of action components from GR00T policy
@@ -143,13 +165,13 @@ def convert_to_isaaclab_stack_cube_action(
 OBS_CONVERSION = {
     "maniskill": convert_maniskill_obs_to_gr00t_format,
     "libero": convert_libero_obs_to_gr00t_format,
-    "isaaclab_stack_cube": convert_libero_obs_to_gr00t_format,
+    "isaaclab": convert_isaaclab_obs_to_gr00t_format,
 }
 
 ACTION_CONVERSION = {
     "libero": convert_to_libero_action,
     "maniskill": convert_to_maniskill_action,
-    "isaaclab_stack_cube": convert_to_isaaclab_stack_cube_action,
+    "isaaclab": convert_to_isaaclab_action,
 }
 
 

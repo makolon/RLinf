@@ -141,7 +141,7 @@ actor:
     model_path: "/workspace/dataset/RLinf-Gr00t-SFT-Stack-cube"
     add_value_head: True
     embodiment_tag: "isaaclab_franka"
-    obs_converter_type: "isaaclab_stack_cube"
+    obs_converter_type: "isaaclab"
     num_action_chunks: 16
 
   optim:
