@@ -48,6 +48,10 @@ def get_model(cfg: DictConfig, torch_dtype=torch.bfloat16):
         data_config = load_data_config(
             "rlinf.models.embodiment.gr00t.modality_config:IsaacLabFrankaDataConfig"
         )
+    elif cfg.embodiment_tag == "oxe_droid":
+        data_config = load_data_config(
+            "rlinf.models.embodiment.gr00t.modality_config:IsaacLabDroidFrankaDataConfig"
+        )
     elif cfg.embodiment_tag == "isaaclab_g1":
         data_config = load_data_config(
             "rlinf.models.embodiment.gr00t.modality_config:IsaacLabG1DataConfig"
